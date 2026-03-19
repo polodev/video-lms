@@ -20,5 +20,12 @@ class DatabaseSeeder extends Seeder
             'email' => 'polodev10@gmail.com',
             'password' => bcrypt('hello123'),
         ]);
+
+        User::factory()->create([
+            'name' => 'Mobile User',
+            'email' => '01616806528@mobile.local',
+            'mobile' => '01616806528',
+            'password' => bcrypt('123456'),
+        ]);
     }
 }

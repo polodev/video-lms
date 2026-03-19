@@ -23,18 +23,26 @@ class SeriesController extends Controller
             });
         }
 
+        if ($request->filled('topic')) {
+            $query->whereHas('topics', fn ($q) => $q->where('slug', $request->input('topic')));
+        }
+
         $all_series = $query->paginate(15)->withQueryString();
         $search = $request->input('query', '');
+        $topics = Topic::withCount('series')->orderBy('title')->get();
+        $activeTopic = $request->input('topic', '');
 
-        return view('lms::series.index', compact('all_series', 'search'));
+        return view('lms::series.index', compact('all_series', 'search', 'topics', 'activeTopic'));
     }
 
     public function indexHidden()
     {
         $all_series = Series::with('topics')->hidden()->latest()->paginate(15);
         $search = '';
+        $topics = Topic::withCount('series')->orderBy('title')->get();
+        $activeTopic = '';
 
-        return view('lms::series.index', compact('all_series', 'search'));
+        return view('lms::series.index', compact('all_series', 'search', 'topics', 'activeTopic'));
     }
 
     public function create()
@@ -53,8 +61,10 @@ class SeriesController extends Controller
 
         $series = Series::create($request->only('title', 'url', 'description'));
 
-        if ($request->filled('topic_ids')) {
-            $series->topics()->attach($request->input('topic_ids'));
+        $topicIds = $request->input('topic_ids', []);
+        $topicIds = array_merge($topicIds, $this->createNewTopics($request->input('new_topics', '')));
+        if (!empty($topicIds)) {
+            $series->topics()->attach($topicIds);
         }
 
         return redirect()->route('series.show', $series)->with('success', 'Series created successfully.');
@@ -93,9 +103,11 @@ class SeriesController extends Controller
 
         $series->update($request->only('title', 'url', 'description', 'hidden'));
 
-        $series->topics()->sync($request->input('topic_ids', []));
+        $topicIds = $request->input('topic_ids', []);
+        $topicIds = array_merge($topicIds, $this->createNewTopics($request->input('new_topics', '')));
+        $series->topics()->sync($topicIds);
 
-        return redirect()->route('series.edit', $series)->with('success', 'Series updated successfully.');
+        return redirect()->route('series.show', $series)->with('success', 'Series updated successfully.');
     }
 
     public function destroy(Series $series)
@@ -103,6 +115,27 @@ class SeriesController extends Controller
         $series->delete();
 
         return redirect()->route('series.index')->with('success', 'Series deleted.');
+    }
+
+    private function createNewTopics(?string $input): array
+    {
+        if (empty(trim($input))) {
+            return [];
+        }
+
+        $names = array_filter(array_map('trim', explode(',', $input)));
+        $ids = [];
+
+        foreach ($names as $name) {
+            if (empty($name)) continue;
+            $topic = Topic::firstOrCreate(
+                ['slug' => \Illuminate\Support\Str::slug($name)],
+                ['title' => $name]
+            );
+            $ids[] = $topic->id;
+        }
+
+        return $ids;
     }
 
     public function scan(Series $series, FolderScannerService $scanner)

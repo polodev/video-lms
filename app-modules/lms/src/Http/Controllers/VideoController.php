@@ -52,6 +52,17 @@ class VideoController extends Controller
         ));
     }
 
+    public function myVideos()
+    {
+        $completedProgress = VideoProgress::where('user_id', auth()->id())
+            ->where('completed', true)
+            ->with('video.chapter.series')
+            ->latest('completed_at')
+            ->paginate(30);
+
+        return view('lms::videos.my-videos', compact('completedProgress'));
+    }
+
     public function stream(Video $video)
     {
         $path = $video->path_name;

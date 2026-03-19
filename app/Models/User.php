@@ -14,7 +14,7 @@ use Modules\Lms\Models\Bookmark;
 use Modules\Lms\Models\Enrollment;
 use Modules\Lms\Models\VideoProgress;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'mobile', 'password'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {

@@ -48,6 +48,9 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::post('/progress/update', [ProgressController::class, 'update'])->name('progress.update');
     Route::post('/progress/toggle-complete', [ProgressController::class, 'toggleComplete'])->name('progress.toggleComplete');
 
+    // My Videos (completed videos)
+    Route::get('/my-videos', [VideoController::class, 'myVideos'])->name('my-videos');
+
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });

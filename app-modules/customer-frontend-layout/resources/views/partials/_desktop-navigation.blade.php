@@ -8,6 +8,9 @@
     <a href="{{ route('bookmarks.index') }}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white {{ request()->routeIs('bookmarks.*') ? 'text-orange-600 dark:text-orange-400' : '' }}">
         Bookmarks
     </a>
+    <a href="{{ route('my-videos') }}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white {{ request()->routeIs('my-videos') ? 'text-orange-600 dark:text-orange-400' : '' }}">
+        My Videos
+    </a>
     <a href="{{ route('dashboard') }}" class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white {{ request()->routeIs('dashboard') ? 'text-orange-600 dark:text-orange-400' : '' }}">
         Dashboard
     </a>

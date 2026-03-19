@@ -13,8 +13,27 @@
         <form action="{{ route('series.index') }}" method="GET" class="flex gap-2">
             <input type="text" name="query" value="{{ $search }}" placeholder="Search series..."
                    class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-orange-500 focus:border-orange-500">
+            @if ($activeTopic)
+                <input type="hidden" name="topic" value="{{ $activeTopic }}">
+            @endif
             <button type="submit" class="px-4 py-2 bg-gray-800 dark:bg-gray-600 text-white text-sm rounded-md hover:bg-gray-700">Search</button>
         </form>
+
+        <!-- Topic Filter -->
+        @if ($topics->isNotEmpty())
+            <div class="flex flex-wrap gap-2">
+                <a href="{{ route('series.index', request()->only('query')) }}"
+                   class="px-3 py-1.5 text-sm rounded-full border {{ !$activeTopic ? 'bg-orange-500 text-white border-orange-500' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                    All
+                </a>
+                @foreach ($topics as $topic)
+                    <a href="{{ route('series.index', array_merge(request()->only('query'), ['topic' => $topic->slug])) }}"
+                       class="px-3 py-1.5 text-sm rounded-full border {{ $activeTopic === $topic->slug ? 'bg-orange-500 text-white border-orange-500' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                        {{ $topic->title }} <span class="text-xs opacity-75">({{ $topic->series_count }})</span>
+                    </a>
+                @endforeach
+            </div>
+        @endif
 
         <!-- Series Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -25,19 +25,24 @@
                           class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-orange-500 focus:border-orange-500">{{ old('description') }}</textarea>
             </div>
 
-            @if ($topics->isNotEmpty())
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Topics</label>
-                    <div class="flex flex-wrap gap-2">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Topics</label>
+                @if ($topics->isNotEmpty())
+                    <div class="flex flex-wrap gap-2 mb-3">
                         @foreach ($topics as $topic)
                             <label class="flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 dark:border-gray-600 rounded-full cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <input type="checkbox" name="topic_ids[]" value="{{ $topic->id }}" class="rounded text-orange-500 focus:ring-orange-500">
+                                <input type="checkbox" name="topic_ids[]" value="{{ $topic->id }}" {{ in_array($topic->id, old('topic_ids', [])) ? 'checked' : '' }} class="rounded text-orange-500 focus:ring-orange-500">
                                 <span class="text-sm text-gray-700 dark:text-gray-300">{{ $topic->title }}</span>
                             </label>
                         @endforeach
                     </div>
+                @endif
+                <div class="flex gap-2">
+                    <input type="text" name="new_topics" value="{{ old('new_topics') }}" placeholder="Add new topics (comma separated)"
+                           class="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm focus:ring-orange-500 focus:border-orange-500">
                 </div>
-            @endif
+                <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">e.g. Laravel, PHP, JavaScript</p>
+            </div>
 
             <div class="flex gap-3 pt-2">
                 <button type="submit" class="px-6 py-2 bg-orange-500 text-white font-medium rounded-md hover:bg-orange-600">Create</button>
