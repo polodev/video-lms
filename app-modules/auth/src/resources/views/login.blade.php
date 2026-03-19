@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="mb-6 flex items-center">
-                        <input type="checkbox" id="remember" name="remember"
+                        <input type="checkbox" id="remember" name="remember" checked
                                class="h-4 w-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500">
                         <label for="remember" class="ml-2 text-sm text-gray-600 dark:text-gray-400">Remember me</label>
                     </div>
