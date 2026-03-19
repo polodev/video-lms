@@ -1,0 +1,23 @@
+{
+    "name": "modules/lms",
+    "description": "LMS core module - series, videos, progress tracking",
+    "type": "library",
+    "version": "1.0",
+    "license": "proprietary",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Modules\\Lms\\": "src/",
+            "Modules\\Lms\\Database\\Factories\\": "database/factories/",
+            "Modules\\Lms\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Lms\\Providers\\LmsServiceProvider"
+            ]
+        }
+    }
+}

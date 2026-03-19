@@ -1,0 +1,23 @@
+{
+    "name": "modules/customer-frontend-layout",
+    "description": "Frontend layout module for Video LMS",
+    "type": "library",
+    "version": "1.0",
+    "license": "proprietary",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Modules\\CustomerFrontendLayout\\": "src/",
+            "Modules\\CustomerFrontendLayout\\Database\\Factories\\": "database/factories/",
+            "Modules\\CustomerFrontendLayout\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\CustomerFrontendLayout\\Providers\\CustomerFrontendLayoutServiceProvider"
+            ]
+        }
+    }
+}
