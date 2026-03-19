@@ -31,7 +31,7 @@ class TopicController extends Controller
 
     public function show(Topic $topic)
     {
-        $topic->load(['series' => fn ($q) => $q->visible()->latest()]);
+        $topic->load(['series' => fn ($q) => $q->with('topics')->visible()->latest()]);
 
         return view('lms::topics.show', compact('topic'));
     }

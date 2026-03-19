@@ -1,5 +1,12 @@
 <x-customer-frontend-layout::layout>
-    <div class="max-w-2xl mx-auto">
+    <div class="max-w-5xl mx-auto">
+        <nav class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <a href="{{ route('series.index') }}" class="hover:text-orange-500">Series</a>
+            <span class="mx-1.5">/</span>
+            <a href="{{ route('series.show', $series) }}" class="hover:text-orange-500">{{ $series->title }}</a>
+            <span class="mx-1.5">/</span>
+            <span class="text-gray-900 dark:text-white">Edit</span>
+        </nav>
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Edit Series</h1>
 
         <form action="{{ route('series.update', $series) }}" method="POST" class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 space-y-4">
@@ -55,13 +62,13 @@
             <div class="flex gap-3 pt-2">
                 <button type="submit" class="px-6 py-2 bg-orange-500 text-white font-medium rounded-md hover:bg-orange-600">Update</button>
                 <a href="{{ route('series.show', $series) }}" class="px-6 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-300 dark:hover:bg-gray-600">Cancel</a>
-
-                <form action="{{ route('series.destroy', $series) }}" method="POST" class="ml-auto" onsubmit="return confirm('Delete this series?')">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="px-4 py-2 bg-red-500 text-white text-sm rounded-md hover:bg-red-600">Delete</button>
-                </form>
             </div>
+        </form>
+
+        <form action="{{ route('series.destroy', $series) }}" method="POST" class="mt-4" onsubmit="return confirm('Delete this series?')">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="px-4 py-2 bg-red-500 text-white text-sm rounded-md hover:bg-red-600">Delete</button>
         </form>
     </div>
 </x-customer-frontend-layout::layout>

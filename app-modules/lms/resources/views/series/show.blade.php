@@ -1,5 +1,12 @@
 <x-customer-frontend-layout::layout>
     <div class="space-y-6">
+        <!-- Breadcrumb -->
+        <nav class="text-sm text-gray-500 dark:text-gray-400">
+            <a href="{{ route('series.index') }}" class="hover:text-orange-500">Series</a>
+            <span class="mx-1.5">/</span>
+            <span class="text-gray-900 dark:text-white">{{ $series->title }}</span>
+        </nav>
+
         <!-- Header -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
             <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">

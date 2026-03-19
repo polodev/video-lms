@@ -1,5 +1,10 @@
 <x-customer-frontend-layout::layout>
     <div class="max-w-md mx-auto">
+        <nav class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <a href="{{ route('topics.index') }}" class="hover:text-orange-500">Topics</a>
+            <span class="mx-1.5">/</span>
+            <span class="text-gray-900 dark:text-white">Create</span>
+        </nav>
         <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Create Topic</h1>
 
         <form action="{{ route('topics.store') }}" method="POST" class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 space-y-4">

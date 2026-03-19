@@ -15,7 +15,9 @@ Route::middleware(['web', 'auth'])->group(function () {
     // Series
     Route::get('/series', [SeriesController::class, 'index'])->name('series.index');
     Route::get('/series/create', [SeriesController::class, 'create'])->name('series.create');
+    Route::get('/series/bulk-create', [SeriesController::class, 'bulkCreate'])->name('series.bulk-create');
     Route::post('/series', [SeriesController::class, 'store'])->name('series.store');
+    Route::post('/series/bulk-store', [SeriesController::class, 'bulkStore'])->name('series.bulk-store');
     Route::get('/series/hidden', [SeriesController::class, 'indexHidden'])->name('series.hidden');
     Route::get('/series/{series}', [SeriesController::class, 'show'])->name('series.show');
     Route::get('/series/{series}/edit', [SeriesController::class, 'edit'])->name('series.edit');

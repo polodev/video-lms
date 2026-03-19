@@ -52,6 +52,53 @@ class SeriesController extends Controller
         return view('lms::series.create', compact('topics'));
     }
 
+    public function bulkCreate()
+    {
+        return view('lms::series.bulk-create');
+    }
+
+    public function bulkStore(Request $request)
+    {
+        $request->validate([
+            'parent_path' => 'required|string',
+        ]);
+
+        $parentPath = rtrim($request->input('parent_path'), '/');
+
+        if (!is_dir($parentPath)) {
+            return back()->withInput()->withErrors(['parent_path' => 'The given path is not a valid directory.']);
+        }
+
+        $folders = array_filter(glob($parentPath . '/*'), 'is_dir');
+
+        if (empty($folders)) {
+            return back()->withInput()->withErrors(['parent_path' => 'No subdirectories found under this path.']);
+        }
+
+        $existingUrls = Series::whereIn('url', $folders)->pluck('url')->flip();
+
+        $created = 0;
+        foreach ($folders as $folderPath) {
+            if ($existingUrls->has($folderPath)) {
+                continue;
+            }
+            $folderName = basename($folderPath);
+            Series::create([
+                'title' => $folderName,
+                'url'   => $folderPath,
+            ]);
+            $created++;
+        }
+
+        $skipped = count($folders) - $created;
+        $message = "{$created} series created successfully.";
+        if ($skipped > 0) {
+            $message .= " {$skipped} skipped (already exist).";
+        }
+
+        return redirect()->route('series.index')->with('success', $message);
+    }
+
     public function store(Request $request)
     {
         $request->validate([

@@ -5,6 +5,7 @@
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Series</h1>
             <div class="flex items-center gap-3">
                 <a href="{{ route('series.hidden') }}" class="text-sm text-gray-500 dark:text-gray-400 hover:underline">Hidden</a>
+                <a href="{{ route('series.bulk-create') }}" class="px-4 py-2 bg-gray-700 dark:bg-gray-600 text-white text-sm font-medium rounded-md hover:bg-gray-800 dark:hover:bg-gray-500">+ Bulk Series</a>
                 <a href="{{ route('series.create') }}" class="px-4 py-2 bg-orange-500 text-white text-sm font-medium rounded-md hover:bg-orange-600">+ New Series</a>
             </div>
         </div>
@@ -35,24 +36,28 @@
             </div>
         @endif
 
-        <!-- Series Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Series List -->
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 divide-y divide-gray-200 dark:divide-gray-700">
             @forelse ($all_series as $series)
-                <a href="{{ route('series.show', $series) }}" class="block bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 line-clamp-2">{{ $series->title }}</h3>
-
-                    @if ($series->topics->isNotEmpty())
-                        <div class="flex flex-wrap gap-1 mb-3">
-                            @foreach ($series->topics as $topic)
-                                <span class="px-2 py-0.5 text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-full">{{ $topic->title }}</span>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    <p class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ $series->url }}</p>
-                </a>
+                <div class="flex items-center gap-4 px-5 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                    <div class="flex-1 min-w-0">
+                        <a href="{{ route('series.show', $series) }}" class="block text-sm font-semibold text-gray-900 dark:text-white truncate hover:text-orange-500">{{ $series->title }}</a>
+                        <p class="text-xs text-gray-400 dark:text-gray-500 font-mono truncate">{{ $series->url }}</p>
+                        @if ($series->topics->isNotEmpty())
+                            <div class="flex flex-wrap gap-1 mt-1">
+                                @foreach ($series->topics as $topic)
+                                    <span class="px-2 py-0.5 text-xs bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-full">{{ $topic->title }}</span>
+                                @endforeach
+                            </div>
+                        @endif
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <a href="{{ route('series.show', $series) }}" class="px-3 py-1.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600">View</a>
+                        <a href="{{ route('series.edit', $series) }}" class="px-3 py-1.5 text-xs font-medium bg-orange-500 text-white rounded hover:bg-orange-600">Edit</a>
+                    </div>
+                </div>
             @empty
-                <div class="col-span-full text-center py-12 text-gray-500 dark:text-gray-400">
+                <div class="text-center py-12 text-gray-500 dark:text-gray-400">
                     No series found. <a href="{{ route('series.create') }}" class="text-orange-500 hover:underline">Create one</a>.
                 </div>
             @endforelse
