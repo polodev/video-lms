@@ -7,10 +7,9 @@
                 <div class="bg-black rounded-lg overflow-hidden mb-4">
                     <video
                         id="video-player"
-                        class="video-js vjs-default-skin w-full"
+                        class="video-js vjs-default-skin vjs-big-play-centered"
                         controls
-                        preload="auto"
-                        data-setup='{}'>
+                        preload="auto">
                         <source src="{{ route('video.stream', $video) }}" type="video/mp4">
                     </video>
                 </div>
@@ -104,6 +103,9 @@
 
     @push('head')
         <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet">
+        <style>
+            .video-js { width: 100%; height: auto; aspect-ratio: 16/9; }
+        </style>
     @endpush
 
     @push('scripts')
@@ -130,7 +132,6 @@
                             controls: true,
                             preload: 'auto',
                             playbackRates: [0.7, 1.0, 1.25, 1.5, 2.0, 2.5, 3.0],
-                            fluid: true,
                         });
 
                         // Restore speed from localStorage

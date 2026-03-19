@@ -22,18 +22,22 @@ class FolderScannerService
         // Delete existing chapters (videos cascade)
         $series->chapters()->delete();
 
-        $subfolders = collect(File::directories($url))->sort(SORT_NATURAL)->values();
+        // Resolve the effective chapter root:
+        // If only one immediate subfolder exists, drill into it
+        $chapterRoot = $this->resolveChapterRoot($url);
+
+        $subfolders = collect(File::directories($chapterRoot))->sort(SORT_NATURAL)->values();
 
         if ($subfolders->isEmpty()) {
-            // No subfolders — create single chapter from root files
-            $files = $this->getMediaFiles($url);
+            // No subfolders — create single chapter from files
+            $files = $this->getMediaFiles($chapterRoot);
             if (empty($files)) {
                 return 0;
             }
 
             $chapter = $series->chapters()->create([
                 'title' => $series->title,
-                'folder_path' => $url,
+                'folder_path' => $chapterRoot,
                 'sort_order' => 1,
             ]);
 
@@ -63,6 +67,21 @@ class FolderScannerService
         }
 
         return $totalVideos;
+    }
+
+    private function resolveChapterRoot(string $path): string
+    {
+        $subfolders = File::directories($path);
+
+        // If exactly one subfolder, drill down and check again
+        if (count($subfolders) === 1) {
+            $innerFolders = File::directories($subfolders[0]);
+            if (!empty($innerFolders)) {
+                return $subfolders[0];
+            }
+        }
+
+        return $path;
     }
 
     private function getMediaFiles(string $directory): array

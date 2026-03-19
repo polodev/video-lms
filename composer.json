@@ -32,7 +32,8 @@
             "Database\\Seeders\\": "database/seeders/",
             "Modules\\CustomerFrontendLayout\\": "app-modules/customer-frontend-layout/src/",
             "Modules\\CustomerAccountLayout\\": "app-modules/customer-account-layout/src/",
-            "Modules\\Lms\\": "app-modules/lms/src/"
+            "Modules\\Lms\\": "app-modules/lms/src/",
+            "Modules\\Auth\\": "app-modules/auth/src/"
         }
     },
     "autoload-dev": {
